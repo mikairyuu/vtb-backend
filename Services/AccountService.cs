@@ -41,6 +41,22 @@ namespace vtb_backend.Services
             return rvalue;
         }
 
+        public static string Login(loginUser user)
+        {
+            var dbase = new DBManager();
+            var cmd = new MySqlCommand("select * from accounts where email=@email");
+            cmd.Parameters.AddWithValue("@email", user.Email);
+            var reader = dbase.GetReader(cmd);
+            reader.Read();
+            var pwdHash = reader.GetString("hash");
+            if (GenerateHashFromSalt(user.Password, reader.GetString("salt")) != pwdHash)
+                return null;
+            dbase.Close();
+
+            return pwdHash;
+        }
+
+
         private static KeyValuePair<string, string> GenerateHash(string s)
         {
             var salt = new byte[128 / 8];

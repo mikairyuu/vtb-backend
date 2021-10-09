@@ -20,24 +20,23 @@ namespace vtb_backend.Controllers
         }
 
         [HttpPost("create")]
-        public ActionResult<string> Create([Bind("name,email,password")] User user)
+        public ActionResult<TokenObject> Create([Bind("name,email,password")] User user)
         {
             if (user == null)
                 return BadRequest();
-
-            return AccountService.CreateUser(user);
+            return new TokenObject {token = AccountService.CreateUser(user)};
         }
 
         [HttpPost("login")]
-        public ActionResult<string> Login([Bind("email,password")] User user)
+        public ActionResult<TokenObject> Login([Bind("email,password")] loginUser user)
         {
             if (user == null)
                 return BadRequest();
-            var loggedUser = AccountService.CreateUser(user);
+            var loggedUser = AccountService.Login(user);
             if (loggedUser == null)
                 return NotFound();
 
-            return loggedUser;
+            return new TokenObject {token = loggedUser};
         }
     }
 }
