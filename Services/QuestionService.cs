@@ -37,7 +37,7 @@ namespace vtb_backend.Services
             }
 
             //Got all messages
-            cmd = new MySqlCommand("select answers.answer_text, answers.is_correct, answers.question_id " +
+            cmd = new MySqlCommand("select answers.answer_id, answers.answer_text, answers.is_correct, answers.question_id " +
                                    "from headerquests join Questions on headerquests.question_id=Questions.question_id " +
                                    $"join answers on questions.question_id=answers.question_id where header_id={headerId}");
             dbase.Close();
@@ -52,6 +52,7 @@ namespace vtb_backend.Services
                         msgList[i].buttons ??= new List<Button>();
                         msgList[i].buttons.Add(new Button
                         {
+                            answer_id = reader.GetInt32("answer_id"),
                             is_correct = reader.GetBoolean("is_correct"), text = reader.GetString("answer_text")
                         });
                     }
@@ -64,7 +65,8 @@ namespace vtb_backend.Services
             {
                 buttons = headerMsg.buttons, dayName = dayName, imageId = headerMsg.imageId, messages = msgList,
                 text = headerMsg.text
-            };;
+            };
+            ;
         }
     }
 }

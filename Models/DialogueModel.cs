@@ -23,6 +23,7 @@ namespace vtb_backend.Models
 
     public class Button
     {
+        public int answer_id { get; set; }
         public bool is_correct { get; set; }
         public string text { get; set; }
     }
