@@ -66,7 +66,6 @@ namespace vtb_backend.Services
                 buttons = headerMsg.buttons, dayName = dayName, imageId = headerMsg.imageId, messages = msgList,
                 text = headerMsg.text
             };
-            ;
         }
     }
 }
