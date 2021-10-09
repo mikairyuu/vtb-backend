@@ -33,7 +33,7 @@ namespace vtb_backend.Services
         public static bool UserExists(string email)
         {
             var dbase = new DBManager();
-            var cmd = new MySqlCommand("select email from accounts where email=@username");
+            var cmd = new MySqlCommand("select email from accounts where email=@email");
             cmd.Parameters.AddWithValue("@email", email);
             var reader = dbase.GetReader(cmd);
             var rvalue = reader.Read();
@@ -65,14 +65,14 @@ namespace vtb_backend.Services
             if (UserExists(user.Email)) return null;
             var (hash, salt) = GenerateHash(user.Password);
             var cmd = new MySqlCommand(
-                $"insert into accounts(username,email,hash,value) values(@username,@email,'{hash}','{salt}')");
+                $"insert into accounts(name,email,hash,salt) values(@name,@email,'{hash}','{salt}')");
             cmd.Parameters.AddStringsWithValues(new[]
             {
-                "@username", user.Name, "@email", user.Email
+                "@name", user.Name, "@email", user.Email
             });
             dbase.InsertCommand(cmd);
             dbase.Close();
-            return salt;
+            return hash;
         }
 
         private static void AddStringsWithValues(this MySqlParameterCollection collection,
