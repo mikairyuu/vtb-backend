@@ -80,7 +80,7 @@ namespace vtb_backend.Services
             var (hash, salt) = GenerateHash(user.Password);
             var cmd = new MySqlCommand(
                 $"insert into accounts(name,email,hash,salt) values(@name,@email,'{hash}','{salt}');" +
-                $"insert into userstats (user_id,score, invester_status, lessons_done, case_done, money) values((select user_id from accounts where hash={hash}),0,false,0,0,100)");
+                $"insert into userstats (user_id,score, invester_status, lessons_done, case_done, money) values((select user_id from accounts where hash=\"{hash}\"),0,false,0,0,100)");
             cmd.Parameters.AddStringsWithValues(new[]
             {
                 "@name", user.Name, "@email", user.Email

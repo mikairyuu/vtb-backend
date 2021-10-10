@@ -10,7 +10,7 @@ namespace vtb_backend.Services
         {
             var dbase = new DBManager();
             var cmd = new MySqlCommand(
-                $"select * from accounts join userstats on accounts.user_id=userstats.user_id where hash={token}");
+                $"select * from accounts join userstats on accounts.user_id=userstats.user_id where hash=\"{token}\"");
             var reader = dbase.GetReader(cmd);
             reader.Read();
             var res = new UserStats
